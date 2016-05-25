@@ -1,0 +1,17 @@
+setwd("C:/Users/yongzhao/Desktop/R 2015/Exploratory data analysis")
+power<-read.table('household_power_consumption.txt',header=TRUE,sep=";", na.strings="?")
+plotdata <- power[power$Date %in% c("1/2/2007","2/2/2007"),]
+time <-strptime(paste(plotdata$Date, plotdata$Time, sep=" "),"%d/%m/%Y %H:%M:%S")
+plotdata <- cbind(time, plotdata)
+
+par(mfrow=c(2,2))
+with(plotdata,plot(time,Global_active_power,type="l", col="black", xlab="", ylab="Global Active Power (kilowatts)"))
+with(plotdata,plot(time,Voltage,type="l", col="black", xlab="datatime", ylab="Voltage"))
+labels <- c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3")
+plot(plotdata$time, plotdata$Sub_metering_1, type="l", xlab="", ylab="Energy sub metering")
+lines(plotdata$time, plotdata$Sub_metering_2, col="red")
+lines(plotdata$time, plotdata$Sub_metering_3, col="blue")
+legend("topright", legend=labels, col=c("black", "red", "blue"), lty=1, lwd=1,bty="n", cex=0.5)
+with(plotdata,plot(time,Global_reactive_power,type="l", col="black", xlab="datetime", ylab="Global_reactive_power"))
+dev.copy(png,'plot4.png',width=480,height=480,units="px")
+dev.off()    
